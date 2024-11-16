@@ -68,23 +68,17 @@ def send_notification(new_models: List[str]) -> None:
         new_models (List[str]): A list of new model IDs.
     """
     message = {
-        "version": "1.0",
-        "source": "custom",
-        "content": {
-            "textType": "client-markdown",
-            "title": f":tada: Amazon Bedrock に新しいモデルが追加されました!! Region: {region}",
-            "description": '\n'.join(new_models),
-            "nextSteps": [
-                "宇宙最速を目指そう:rocket: ",
-                f'''Go to <https://{region}.console.aws.amazon.com/bedrock/home?region={
-                    region}#/modelaccess|*Model Access*>'''
-            ]
-        }
+        "default": f"""Amazon Bedrockの新モデルが出現しました！
+リージョン： 東京
+モデル名：
+{chr(10).join(f"- {model}" for model in new_models)}"""
     }
+
     try:
         sns.publish(
             TopicArn=f"arn:aws:sns:{region}:{account_id}:{topic_name}",
-            Message=json.dumps(message)
+            Message=json.dumps(message, ensure_ascii=False),
+            MessageStructure="json"
         )
     except ClientError as e:
         log_and_raise_error(e)
