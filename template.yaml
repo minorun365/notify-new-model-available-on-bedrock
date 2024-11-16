@@ -7,7 +7,7 @@ Parameters:
   pTopicName:
     Type: String
     Description: The Name of the SNS topic for notifications.
-    Default: "AWSChatbot-Topic"
+    Default: "bedrock-tokyo"
   pRateMinute:
     Type: String
     Description: Rate minutes to be set in EventBridge scheduler.
